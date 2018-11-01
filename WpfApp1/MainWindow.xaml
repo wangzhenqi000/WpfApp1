@@ -7,8 +7,9 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button x:Name="button" Content="界面卡死" HorizontalAlignment="Left" Margin="219,127,0,0" VerticalAlignment="Top" Width="134" Height="47" Click="Button_Click"/>
-        <Button x:Name="button1" Content="界面不卡" HorizontalAlignment="Left" Margin="507,113,0,0" VerticalAlignment="Top" Width="167" Height="61" Click="button1_Click"/>
+        <Button x:Name="button" Content="界面卡死" HorizontalAlignment="Left" Margin="146,77,0,0" VerticalAlignment="Top" Width="134" Height="47" Click="Button_Click"/>
+        <Button x:Name="button1" Content="界面不卡&#xD;&#xA;使用多线程+回调" HorizontalAlignment="Left" Margin="146,155,0,0" VerticalAlignment="Top" Width="167" Height="61" Click="button1_Click"/>
+        <Button x:Name="button3" Content="界面不卡&#xD;&#xA;使用await" HorizontalAlignment="Left" Margin="146,249,0,0" VerticalAlignment="Top" Width="201" RenderTransformOrigin="0.557,0.52" Height="78" Click="button3_Click"/>
 
     </Grid>
 </Window>

@@ -36,38 +36,50 @@ namespace WpfApp1
             return re * calc(i + 1);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void timeUseFunc()
         {
             double result = 0.0;
-            button.IsEnabled = false;
             Console.WriteLine(DateTime.Now.ToShortTimeString());
             for (int i = 0; i < 10000; i++)
             {
                 result += calc(0);
             }
             Console.WriteLine(DateTime.Now.ToShortTimeString());
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            //timeUseFunc直接阻塞界面线程
+            button.IsEnabled = false;
+            timeUseFunc();
             button.IsEnabled = true;
         }
 
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-            double result = 0.0;
             button1.IsEnabled = false;
-
             Thread thread = new Thread(new ParameterizedThreadStart(_ => {
-                Console.WriteLine(DateTime.Now.ToShortTimeString());
-                for (int i = 0; i < 100000; i++)
-                {
-                    result += calc(0);
-                }
-                Console.WriteLine(DateTime.Now.ToShortTimeString());
+                timeUseFunc();
                 this.Dispatcher.BeginInvoke(new Action(() =>
-                {
+                {//相当于回调函数
                     button1.IsEnabled = true;
                 }));
             }));//创建线程
 
             thread.Start(); //启动线程
+        }
+
+        private async void asyncFunc()
+        {
+            button3.IsEnabled = false;
+            await Task.Factory.StartNew(delegate { timeUseFunc(); });
+            //Task t1 = new Task(timeUseFunc);           
+            button3.IsEnabled = true;
+        }
+
+        private void button3_Click(object sender, RoutedEventArgs e)
+        {            
+            asyncFunc();           
         }
     }
 }
