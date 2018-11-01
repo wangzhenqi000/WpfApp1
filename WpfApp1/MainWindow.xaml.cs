@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,18 +26,48 @@ namespace WpfApp1
             InitializeComponent();
         }
 
+        private double calc(int i)
+        {
+            if(i > 1000)
+            {
+                return 1;
+            }
+            double re = Math.Cos(i) * Math.Sin(i);
+            return re * calc(i + 1);
+        }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             double result = 0.0;
             button.IsEnabled = false;
             Console.WriteLine(DateTime.Now.ToShortTimeString());
-            for (int i = 0; i < 1000000; i++)
+            for (int i = 0; i < 10000; i++)
             {
-                result += Math.Cos(i);
-                result *= Math.Sin(i);
+                result += calc(0);
             }
             Console.WriteLine(DateTime.Now.ToShortTimeString());
             button.IsEnabled = true;
+        }
+
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+            double result = 0.0;
+            button1.IsEnabled = false;
+
+            Thread thread = new Thread(new ParameterizedThreadStart(_ => {
+                Console.WriteLine(DateTime.Now.ToShortTimeString());
+                for (int i = 0; i < 100000; i++)
+                {
+                    result += calc(0);
+                }
+                Console.WriteLine(DateTime.Now.ToShortTimeString());
+                this.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    button1.IsEnabled = true;
+                }));
+            }));//创建线程
+
+            thread.Start(); //启动线程
         }
     }
 }
